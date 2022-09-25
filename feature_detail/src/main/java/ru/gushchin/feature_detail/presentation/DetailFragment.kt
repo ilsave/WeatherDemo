@@ -9,9 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.launch
+import ru.gushchin.core_network.model.WeatherDTO
 import ru.gushchin.feature_detail.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment() {
@@ -33,24 +37,29 @@ class DetailFragment : Fragment() {
                 }
                 permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
                     // Only approximate location access granted.
-                } else -> {
-                // No location access granted.
-            }
+                }
+                else -> {
+                    // No location access granted.
+                }
             }
         }
 
-        locationPermissionRequest.launch(arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION))
+        locationPermissionRequest.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
 
         binding.navToFav.setOnClickListener {
 
-            val request = NavDeepLinkRequest.Builder
-                .fromUri("android-app://example.google.app/favorite_list_fragment".toUri())
-                .build()
-            findNavController().navigate(request)
+//            val request = NavDeepLinkRequest.Builder
+//                .fromUri("android-app://example.google.app/favorite_list_fragment".toUri())
+//                .build()
+//            findNavController().navigate(request)
             lifecycleScope.launchWhenStarted {
                 viewModel.getTheCurrent()
+                fetchPraySchedules()
             }
         }
 
@@ -80,13 +89,30 @@ class DetailFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-//        fun newInstance(param1: String, param2: String) =
-//            DetailFragment().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
+    private fun fetchPraySchedules() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        is DetailViewModel.DetailUiState.Loaded -> onLoaded(state)
+                        is DetailViewModel.DetailUiState.Error -> showError(state)
+                        is DetailViewModel.DetailUiState.Loading -> showLoading()
+                    }
+                }
+            }
+        }
+    }
+
+    fun onLoaded(itemState: DetailViewModel.DetailUiState) {
+        binding.progressBar.visibility = View.GONE
+    }
+
+    fun showError(stateError: DetailViewModel.DetailUiState) {
+        Toast.makeText(context,"something went wrong", Toast.LENGTH_SHORT).show()
+    }
+
+    fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        Toast.makeText(context,"loading", Toast.LENGTH_SHORT).show()
     }
 }

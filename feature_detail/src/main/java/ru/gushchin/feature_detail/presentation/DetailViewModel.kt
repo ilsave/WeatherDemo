@@ -1,12 +1,12 @@
 package ru.gushchin.feature_detail.presentation
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.gushchin.feature_detail.domain.CurrentCityWeatherInteractor
+import ru.gushchin.feature_detail.domain.Resource
 
 class DetailViewModel: ViewModel() {
 
@@ -16,19 +16,18 @@ class DetailViewModel: ViewModel() {
     val useCase = CurrentCityWeatherInteractor()
 
     suspend fun getTheCurrent() {
+        _uiState.value = DetailUiState.Loading
         viewModelScope.launch {
-            useCase.getCurrentCityWeatherBy(5)
+            useCase.getCurrentCityWeatherBy().also { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        _uiState.value = DetailUiState.Loaded(result.data)
+                    }
+                    is Resource.Error -> {
+                        _uiState.value = DetailUiState.Error(result.message)
+                    }
+                }
+            }
         }
-    }
-
-    data class DetailCityWeather(
-        val name: String,
-        val weather: String
-    )
-
-    sealed class DetailUiState {
-        object Loading : DetailUiState()
-        class Loaded(val itemState: DetailCityWeather) : DetailUiState()
-        class Error(@StringRes val message: Int) : DetailUiState()
     }
 }

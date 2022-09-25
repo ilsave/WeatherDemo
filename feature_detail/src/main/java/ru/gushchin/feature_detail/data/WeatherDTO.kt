@@ -1,6 +1,6 @@
 package ru.gushchin.feature_detail.data
 
-data class WeatherCloud(
+data class WeatherDTO(
     val base: String,
     val clouds: Clouds,
     val cod: Int,
