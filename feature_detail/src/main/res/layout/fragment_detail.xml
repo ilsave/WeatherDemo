@@ -11,7 +11,8 @@
         android:text="DetailFragment"
         android:textSize="45sp"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/nav_to_search"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:textSize="24sp"
