@@ -33,13 +33,7 @@ class DetailFragment : Fragment() {
         ) { permissions ->
             when {
                 permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                    // Precise location access granted.
-                }
-                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                    // Only approximate location access granted.
-                }
-                else -> {
-                    // No location access granted.
+
                 }
             }
         }
@@ -52,17 +46,15 @@ class DetailFragment : Fragment() {
         )
 
         binding.navToFav.setOnClickListener {
-
-//            val request = NavDeepLinkRequest.Builder
-//                .fromUri("android-app://example.google.app/favorite_list_fragment".toUri())
-//                .build()
-//            findNavController().navigate(request)
-            lifecycleScope.launchWhenStarted {
-                viewModel.getTheCurrent()
-                fetchPraySchedules()
-            }
+            val request = NavDeepLinkRequest.Builder
+                .fromUri("android-app://example.google.app/favorite_list_fragment".toUri())
+                .build()
+            findNavController().navigate(request)
         }
-
+        lifecycleScope.launchWhenStarted {
+            viewModel.getTheCurrent()
+        }
+        fetchPraySchedules()
 
 //        binding. .setOnClickListener {
 //            Toast.makeText(context, "hehe", Toast.LENGTH_SHORT).show()
@@ -94,20 +86,22 @@ class DetailFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     when (state) {
-                        is DetailViewModel.DetailUiState.Loaded -> onLoaded(state)
-                        is DetailViewModel.DetailUiState.Error -> showError(state)
-                        is DetailViewModel.DetailUiState.Loading -> showLoading()
+                        is DetailUiState.Loaded -> onLoaded(state.itemState)
+                        is DetailUiState.Error -> showError(state)
+                        is DetailUiState.Loading -> showLoading()
                     }
                 }
             }
         }
     }
 
-    fun onLoaded(itemState: DetailViewModel.DetailUiState) {
+    fun onLoaded(itemState: WeatherDTO) {
         binding.progressBar.visibility = View.GONE
+        Toast.makeText(context, itemState.name, Toast.LENGTH_SHORT).show()
+        binding.textView2.text = itemState.name
     }
 
-    fun showError(stateError: DetailViewModel.DetailUiState) {
+    fun showError(stateError: DetailUiState) {
         Toast.makeText(context,"something went wrong", Toast.LENGTH_SHORT).show()
     }
 
