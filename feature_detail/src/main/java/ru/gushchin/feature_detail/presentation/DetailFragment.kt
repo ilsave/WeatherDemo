@@ -5,22 +5,51 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.gushchin.feature_detail.R
-
+import android.widget.Toast
+import androidx.core.net.toUri
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.fragment.findNavController
+import ru.gushchin.feature_detail.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var _binding: FragmentDetailBinding? = null
+    private val binding get() = _binding!!
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.navToFav.setOnClickListener {
+
+            val request = NavDeepLinkRequest.Builder
+                .fromUri("android-app://example.google.app/favorite_list_fragment".toUri())
+                .build()
+            findNavController().navigate(request)
+        }
+
+        binding.navToSearch.setOnClickListener {
+            Toast.makeText(context, "hehe", Toast.LENGTH_SHORT).show()
+
+
+            val request = NavDeepLinkRequest.Builder
+                .fromUri("android-app://example.google.app/search_fragment".toUri())
+                .build()
+            findNavController().navigate(request)
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
