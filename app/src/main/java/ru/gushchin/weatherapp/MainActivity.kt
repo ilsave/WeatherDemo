@@ -11,13 +11,5 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        //initNavManager()
-//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-//        val request = NavDeepLinkRequest.Builder
-//            .fromUri("android-app://example.google.app/detail_fragment".toUri())
-//            .build()
-        //navHostFragment?.findNavController()?.navigate(request)
     }
-
 }
