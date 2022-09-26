@@ -1,7 +1,8 @@
-package ru.gushchin.weatherapp
+package ru.gushchin.weatherapp.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ru.gushchin.weatherapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
