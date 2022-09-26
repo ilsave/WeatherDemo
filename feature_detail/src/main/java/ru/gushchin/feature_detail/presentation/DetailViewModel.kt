@@ -9,16 +9,18 @@ import kotlinx.coroutines.launch
 import ru.gushchin.feature_detail.data.DefaultLocationTracker
 import ru.gushchin.feature_detail.data.LocationTracker
 import ru.gushchin.feature_detail.domain.CurrentCityWeatherInteractor
+import ru.gushchin.feature_detail.domain.CurrentCityWeatherUseCases
 import ru.gushchin.feature_detail.domain.Resource
+import javax.inject.Inject
 
-class DetailViewModel: ViewModel() {
+class DetailViewModel @Inject constructor(
+    private val useCase: CurrentCityWeatherUseCases
+): ViewModel() {
 
     private val _uiState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
     val uiState: StateFlow<DetailUiState> = _uiState
 
     private val locationTracker = DefaultLocationTracker()
-
-    private val useCase = CurrentCityWeatherInteractor()
 
     suspend fun getTheCurrent() {
         _uiState.value = DetailUiState.Loading

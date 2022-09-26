@@ -1,6 +1,7 @@
 package ru.gushchin.feature_detail.presentation
 
 import android.Manifest
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,13 +18,21 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import ru.gushchin.core_network.model.WeatherDTO
 import ru.gushchin.feature_detail.databinding.FragmentDetailBinding
+import ru.gushchin.feature_detail.di.FeatureDetailComponent
+import javax.inject.Inject
 
 class DetailFragment : Fragment() {
 
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel = DetailViewModel()
+    @Inject
+    lateinit var viewModel: DetailViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        FeatureDetailComponent.featureDetailComponent?.inject(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -1,19 +1,17 @@
 package ru.gushchin.weatherapp
 
 import android.app.Application
-import ru.gushchin.core_local_storage.di.LocalStorageModule
-import ru.gushchin.weatherapp.di.AppComponent
-import ru.gushchin.weatherapp.di.AppModule
-import ru.gushchin.weatherapp.di.DaggerAppComponent
+import android.content.Context
 
 class WeatherApplication: Application() {
-    lateinit var appComponent: AppComponent
-
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent.builder()
-            .appModule(AppModule(context = this))
-            .localStorageModule(LocalStorageModule(context = this))
-            .build()
+        context = applicationContext
+    }
+
+    companion object {
+        @Volatile
+        lateinit var context: Context
+        private set
     }
 }
