@@ -1,6 +1,6 @@
 package ru.gushchin.feature_detail.presentation
 
-import ru.gushchin.core_network.model.WeatherDTO
+import ru.gushchin.core_network.data.models.WeatherDTO
 
 sealed class DetailUiState {
     object Loading : DetailUiState()

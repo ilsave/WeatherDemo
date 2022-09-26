@@ -1,4 +1,4 @@
-package ru.gushchin.core_network.model
+package ru.gushchin.core_network.data.models
 
 data class Weather(
     val description: String,

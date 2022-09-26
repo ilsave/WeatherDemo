@@ -1,4 +1,4 @@
-package ru.gushchin.core_network.model
+package ru.gushchin.core_network.data.models
 
 data class WeatherDTO(
     val base: String,
@@ -14,8 +14,4 @@ data class WeatherDTO(
     val visibility: Int,
     val weather: List<Weather>,
     val wind: Wind
-) {
-    fun toDomainModel() {
-
-    }
-}
+)

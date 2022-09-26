@@ -1,6 +1,7 @@
 package ru.gushchin.weatherapp.di
 
 import ru.gushchin.core_local_storage.di.DaggerLocalDatabaseApiComponent
+import ru.gushchin.core_network.di.DaggerWeatherApiComponent
 import ru.gushchin.feature_detail.di.DaggerFeatureDetailComponent_FeatureDetailDependenciesComponent
 import ru.gushchin.feature_detail.di.FeatureDetailComponent
 
@@ -9,6 +10,7 @@ object FeatureInjectorProxy {
         FeatureDetailComponent.initAndGet(
             DaggerFeatureDetailComponent_FeatureDetailDependenciesComponent.builder()
                 .localStorageApi(DaggerLocalDatabaseApiComponent.builder().build())
+                .networkApi(DaggerWeatherApiComponent.builder().build())
                 .build()
         )
     }

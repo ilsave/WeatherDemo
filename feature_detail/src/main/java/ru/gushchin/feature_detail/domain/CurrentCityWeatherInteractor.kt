@@ -1,8 +1,7 @@
 package ru.gushchin.feature_detail.domain
 
-import ru.gushchin.core_network.model.WeatherDTO
+import ru.gushchin.core_network.data.models.WeatherDTO
 import ru.gushchin.feature_detail.data.WeatherRepository
-import ru.gushchin.feature_detail.data.WeatherRepositoryImpl
 import javax.inject.Inject
 
 class CurrentCityWeatherInteractor @Inject constructor(

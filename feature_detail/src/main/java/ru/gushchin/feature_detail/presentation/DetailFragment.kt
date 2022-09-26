@@ -16,7 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
-import ru.gushchin.core_network.model.WeatherDTO
+import ru.gushchin.core_network.data.models.WeatherDTO
 import ru.gushchin.feature_detail.databinding.FragmentDetailBinding
 import ru.gushchin.feature_detail.di.FeatureDetailComponent
 import javax.inject.Inject

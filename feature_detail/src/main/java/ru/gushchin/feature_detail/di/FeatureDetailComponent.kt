@@ -2,6 +2,7 @@ package ru.gushchin.feature_detail.di
 
 import dagger.Component
 import ru.gushchin.core_local_storage.data.api.LocalStorageApi
+import ru.gushchin.core_network.data.api.NetworkApi
 import ru.gushchin.feature_detail.presentation.DetailFragment
 
 @Component(
@@ -35,6 +36,6 @@ abstract class FeatureDetailComponent {
 
     abstract fun inject(fragment: DetailFragment)
 
-    @Component(dependencies = [LocalStorageApi::class])
+    @Component(dependencies = [LocalStorageApi::class, NetworkApi::class])
     interface FeatureDetailDependenciesComponent: FeatureDetailDependencies
 }
