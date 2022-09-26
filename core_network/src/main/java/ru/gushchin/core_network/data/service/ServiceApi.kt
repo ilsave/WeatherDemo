@@ -8,9 +8,6 @@ import ru.gushchin.core_network.data.models.WeatherDTO
 interface ServiceApi {
 //https://api.openweathermap.org/data/2.5/weather?lat=36.4761&lon=-119.4432&appid=9a1ad8e040498143de6489d838221ced
 
-    val API_KEY: String
-        get() = "9a1ad8e040498143de6489d838221ced"
-
     @GET("data/2.5/weather?")
     suspend fun getWeatherData(
         @Query("lat") lat: Double,
