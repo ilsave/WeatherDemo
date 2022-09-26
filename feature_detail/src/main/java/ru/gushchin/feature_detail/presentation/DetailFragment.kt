@@ -56,15 +56,15 @@ class DetailFragment : Fragment() {
         }
         fetchPraySchedules()
 
-//        binding. .setOnClickListener {
-//            Toast.makeText(context, "hehe", Toast.LENGTH_SHORT).show()
-//
-//
-//            val request = NavDeepLinkRequest.Builder
-//                .fromUri("android-app://example.google.app/search_fragment".toUri())
-//                .build()
-//            findNavController().navigate(request)
-//        }
+        binding.navToSearch.setOnClickListener {
+            Toast.makeText(context, "hehe", Toast.LENGTH_SHORT).show()
+
+
+            val request = NavDeepLinkRequest.Builder
+                .fromUri("android-app://example.google.app/search_fragment".toUri())
+                .build()
+            findNavController().navigate(request)
+        }
     }
 
     override fun onCreateView(
