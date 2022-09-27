@@ -15,4 +15,9 @@ interface ServiceApi {
         @Query("appid") appid: String = "9a1ad8e040498143de6489d838221ced"
     ): Response<WeatherDTO>
 
+    @GET("data/2.5/weather?")
+    suspend fun getWeatherCityData(
+        @Query("q") lat: String = "Moscow" ,
+        @Query("appid") appid: String = "9a1ad8e040498143de6489d838221ced"
+    ): Response<WeatherDTO>
 }
