@@ -12,7 +12,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import com.google.android.gms.location.LocationServices
 
-
 @ExperimentalCoroutinesApi
 class DefaultLocationTracker: LocationTracker {
 

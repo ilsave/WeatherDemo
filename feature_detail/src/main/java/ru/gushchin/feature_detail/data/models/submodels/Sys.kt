@@ -1,4 +1,4 @@
-package ru.gushchin.feature_detail.data
+package ru.gushchin.feature_detail.data.models.submodels
 
 data class Sys(
     val country: String,

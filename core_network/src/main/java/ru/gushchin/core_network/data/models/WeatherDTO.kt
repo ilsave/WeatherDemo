@@ -1,5 +1,7 @@
 package ru.gushchin.core_network.data.models
 
+import ru.gushchin.core_network.data.models.submodels.*
+
 data class WeatherDTO(
     val base: String,
     val clouds: Clouds,

@@ -3,20 +3,20 @@ package ru.gushchin.feature_detail.presentation
 import android.Manifest
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
-import ru.gushchin.core_network.data.models.WeatherDTO
+import ru.gushchin.feature_detail.data.models.Weather
 import ru.gushchin.feature_detail.databinding.FragmentDetailBinding
 import ru.gushchin.feature_detail.di.FeatureDetailComponent
 import javax.inject.Inject
@@ -104,7 +104,7 @@ class DetailFragment : Fragment() {
         }
     }
 
-    fun onLoaded(itemState: WeatherDTO) {
+    fun onLoaded(itemState: Weather) {
         binding.progressBar.visibility = View.GONE
         Toast.makeText(context, itemState.name, Toast.LENGTH_SHORT).show()
         binding.textView2.text = itemState.name

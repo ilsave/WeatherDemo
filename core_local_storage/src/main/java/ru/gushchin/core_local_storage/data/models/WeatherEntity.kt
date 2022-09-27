@@ -24,4 +24,6 @@ data class WeatherEntity(
     ) : this(city, icon, temperature, speed, description) {
         this.id = id
     }
+
+
 }
