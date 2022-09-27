@@ -8,10 +8,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import ru.gushchin.core_local_storage.data.api.LocalDatabaseApi
+import ru.gushchin.core_local_storage.data.models.CityEntity
 import ru.gushchin.core_network.data.api.WeatherApi
 import ru.gushchin.core_network.di.NetworkComponent
 import ru.gushchin.core_network.utils.WeatherInCityWorkerConstants.KEY_WEATHER_IN_CITY_RESPONSE
-import ru.gushchin.feature_detail.data.mappers.toCityEntity
 import ru.gushchin.feature_detail.data.mappers.toWeather
 import ru.gushchin.feature_detail.data.mappers.toWeatherEntity
 import ru.gushchin.feature_detail.data.models.Weather
@@ -25,10 +25,10 @@ class WeatherRepositoryImpl @Inject constructor(
     private val weatherApi: WeatherApi
 ) : WeatherRepository {
     override suspend fun getCurrentCityWeather(
-        city: ru.gushchin.feature_detail.data.models.City
+        lat: Double, lon: Double
     ): Resource<Weather> =
         suspendCancellableCoroutine { continuation ->
-            val uuid = weatherApi.getWeather(city.latitude, city.longitude)
+            val uuid = weatherApi.getWeather(lat, lon)
             CoroutineScope(Dispatchers.Main).launch {
                 NetworkComponent.workManager
                     ?.getWorkInfoByIdLiveData(uuid)
@@ -38,7 +38,13 @@ class WeatherRepositoryImpl @Inject constructor(
                                 val weather = getWeatherFromServerResponse(workInfo)
                                 CoroutineScope(Dispatchers.IO).launch {
                                     val cityId = localDatabaseApi.saveCity(
-                                        city.toCityEntity()
+                                        CityEntity(
+                                            weather.name,
+                                            lat,
+                                            lon,
+                                            // TODO: fix
+                                            false
+                                        )
                                     )
                                     localDatabaseApi.saveWeatherInCity(
                                         weather.toWeatherEntity(
@@ -58,9 +64,7 @@ class WeatherRepositoryImpl @Inject constructor(
                                     val cityInCash = localDatabaseApi
                                         .getCities()
                                         ?.filter {
-                                            it.latitude == city.latitude
-                                                    && it.longitude == city.longitude
-                                                    && it.name == city.name
+                                            it.latitude == lat && it.longitude == lon
                                         }
                                     if (cityInCash != null && cityInCash.isNotEmpty()) {
                                         val cashedCity = cityInCash[0]

@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         LocalStorageInjectorProxy.initContext(applicationContext)
         NetworkInjectorProxy.initWorkManager(WeatherApplication.workManager)
-        FeatureInjectorProxy.initFeatureDetailDI()
+        FeatureInjectorProxy.initFeatureDetailDI(applicationContext)
         setContentView(R.layout.activity_main)
     }
 }
