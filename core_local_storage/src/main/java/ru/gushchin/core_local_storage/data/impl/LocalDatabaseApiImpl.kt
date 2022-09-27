@@ -38,5 +38,4 @@ class LocalDatabaseApiImpl @Inject constructor() : LocalDatabaseApi {
     override fun getWeatherInCity(cityId: Long): WeatherEntity? {
         return LocalStorageComponent.database.weatherDao().getWeatherInCity(cityId)
     }
-
 }

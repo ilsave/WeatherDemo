@@ -11,7 +11,7 @@ data class WeatherEntity(
     val speed: Double,
     val description: String
 ) {
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 
     constructor(

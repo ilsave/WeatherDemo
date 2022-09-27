@@ -8,7 +8,7 @@ import ru.gushchin.core_local_storage.data.models.CityEntity
 import ru.gushchin.core_local_storage.data.models.WeatherEntity
 
 @Database(entities = [CityEntity::class, WeatherEntity::class], version = 1)
-abstract class WeatherDatabase: RoomDatabase() {
+abstract class WeatherDatabase : RoomDatabase() {
     abstract fun cityDao(): CityDao
     abstract fun weatherDao(): WeatherDao
 }

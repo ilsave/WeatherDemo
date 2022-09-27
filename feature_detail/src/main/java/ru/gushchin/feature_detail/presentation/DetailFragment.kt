@@ -40,6 +40,7 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.toolbarHome.inflateMenu(R.menu.menu)
+        // TODO move to string holder
         binding.toolbarHome.title = "WeatherApp"
 
         binding.toolbarHome.setOnMenuItemClickListener {
@@ -73,6 +74,7 @@ class DetailFragment : Fragment() {
             )
         )
         binding.favoritesButton.setOnClickListener {
+            // TODO hardcoded uri, should be stored as a constant value
             val request = NavDeepLinkRequest.Builder
                 .fromUri("android-app://example.google.app/favorite_list_fragment".toUri())
                 .build()

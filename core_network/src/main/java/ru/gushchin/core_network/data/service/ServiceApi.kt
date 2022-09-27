@@ -12,12 +12,17 @@ interface ServiceApi {
     suspend fun getWeatherData(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("appid") appid: String = "9a1ad8e040498143de6489d838221ced"
+        @Query("appid") appid: String = Constants.API_KEY
     ): Response<WeatherDTO>
 
     @GET("data/2.5/weather?")
     suspend fun getWeatherCityData(
-        @Query("q") lat: String = "Moscow" ,
-        @Query("appid") appid: String = "9a1ad8e040498143de6489d838221ced"
+        @Query("q") name: String,
+        @Query("appid") appid: String = Constants.API_KEY
     ): Response<WeatherDTO>
+}
+
+object Constants {
+    // should be stored in any keystore. Also should not be pushed.
+    const val API_KEY = "9a1ad8e040498143de6489d838221ced"
 }

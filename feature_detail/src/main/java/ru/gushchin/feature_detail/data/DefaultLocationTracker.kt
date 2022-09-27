@@ -15,8 +15,8 @@ import ru.gushchin.feature_detail.di.FeatureDetailComponent
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class DefaultLocationTracker @Inject constructor(): LocationTracker {
-   private val locationClient =
+class DefaultLocationTracker @Inject constructor() : LocationTracker {
+    private val locationClient =
         LocationServices.getFusedLocationProviderClient(FeatureDetailComponent.applicationContext!!)
 
     override suspend fun getCurrentLocation(): Location? {
@@ -33,14 +33,14 @@ class DefaultLocationTracker @Inject constructor(): LocationTracker {
             .getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        if(!hasAccessCoarseLocationPermission || !hasAccessFineLocationPermission || !isGpsEnabled) {
+        if (!hasAccessCoarseLocationPermission || !hasAccessFineLocationPermission || !isGpsEnabled) {
             return null
         }
 
         return suspendCancellableCoroutine { cont ->
             locationClient.lastLocation.apply {
-                if(isComplete) {
-                    if(isSuccessful) {
+                if (isComplete) {
+                    if (isSuccessful) {
                         cont.resume(result)
                     } else {
                         cont.resume(null)
