@@ -6,15 +6,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.gushchin.feature_search.domain.Resource
-import ru.gushchin.feature_search.domain.SearchCityWeatherInteractor
+import ru.gushchin.feature_search.domain.SearchCityWeatherUseCase
+import javax.inject.Inject
 
-class SearchViewModel: ViewModel() {
+class SearchViewModel @Inject constructor(
+    private val useCase: SearchCityWeatherUseCase
+): ViewModel() {
 
     private val _uiState = MutableStateFlow<SearchCityUiState>(SearchCityUiState.WaitingForSearching)
     val uiState: StateFlow<SearchCityUiState> = _uiState
-
-    //INJECT USECASE
-    val useCase = SearchCityWeatherInteractor()
 
     fun getCityWeather(name: String) {
         _uiState.value = SearchCityUiState.Loading

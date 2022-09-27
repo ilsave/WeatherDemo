@@ -19,7 +19,6 @@ import ru.gushchin.feature_detail.domain.Resource
 import java.lang.reflect.Type
 import javax.inject.Inject
 
-
 class WeatherRepositoryImpl @Inject constructor(
     private val localDatabaseApi: LocalDatabaseApi,
     private val weatherApi: WeatherApi
@@ -100,7 +99,6 @@ class WeatherRepositoryImpl @Inject constructor(
                                         }
                                         Resource.Error("No such city in cash", null)
                                     }
-
                                 }
                             }
                             else -> {}
@@ -117,5 +115,4 @@ class WeatherRepositoryImpl @Inject constructor(
             weatherType
         )
     }
-
 }

@@ -7,6 +7,8 @@ import ru.gushchin.feature_detail.di.DaggerFeatureDetailComponent_FeatureDetailD
 import ru.gushchin.feature_detail.di.FeatureDetailComponent
 import ru.gushchin.feature_favorite.di.DaggerFeatureFavoriteComponent_FeatureFavoriteDependenciesComponent
 import ru.gushchin.feature_favorite.di.FeatureFavoriteComponent
+import ru.gushchin.feature_search.di.DaggerFeatureSearchComponent_FeatureSearchDependenciesComponent
+import ru.gushchin.feature_search.di.FeatureSearchComponent
 
 object FeatureInjectorProxy {
     fun initFeatureDetailDI(context: Context) {
@@ -25,4 +27,13 @@ object FeatureInjectorProxy {
                 .build()
         )
     }
+
+    fun initFeatureSearchDI() {
+        FeatureSearchComponent.initAndGet(
+            DaggerFeatureSearchComponent_FeatureSearchDependenciesComponent.builder()
+                .networkApi(DaggerWeatherApiComponent.builder().build())
+                .build()
+        )
+    }
+
 }

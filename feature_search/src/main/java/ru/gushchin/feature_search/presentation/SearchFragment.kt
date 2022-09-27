@@ -14,19 +14,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import ru.gushchin.feature_search.databinding.FragmentSearchBinding
+import ru.gushchin.feature_search.di.FeatureSearchComponent
+import javax.inject.Inject
 
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    // NEED to inject
-    val searchViewModel = SearchViewModel()
+    @Inject
+    lateinit var viewModel: SearchViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        FeatureSearchComponent.featureSearchComponent?.inject(this)
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
@@ -39,7 +42,7 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Toast.makeText(context, "query", Toast.LENGTH_SHORT).show()
                 query?.let {
-                    searchViewModel.getCityWeather(query)
+                    viewModel.getCityWeather(query)
                 }
                 val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -61,7 +64,7 @@ class SearchFragment : Fragment() {
     private fun fetchSearchData() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                searchViewModel.uiState.collect { state ->
+                viewModel.uiState.collect { state ->
                     when (state) {
                         is SearchCityUiState.WaitingForSearching -> waitingForSearching()
                         is SearchCityUiState.Loaded -> onLoaded(state.itemState)
