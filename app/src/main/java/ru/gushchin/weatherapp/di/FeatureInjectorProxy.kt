@@ -5,7 +5,8 @@ import ru.gushchin.core_local_storage.di.DaggerLocalDatabaseApiComponent
 import ru.gushchin.core_network.di.DaggerWeatherApiComponent
 import ru.gushchin.feature_detail.di.DaggerFeatureDetailComponent_FeatureDetailDependenciesComponent
 import ru.gushchin.feature_detail.di.FeatureDetailComponent
-import ru.gushchin.weatherapp.WeatherApplication
+import ru.gushchin.feature_favorite.di.DaggerFeatureFavoriteComponent_FeatureFavoriteDependenciesComponent
+import ru.gushchin.feature_favorite.di.FeatureFavoriteComponent
 
 object FeatureInjectorProxy {
     fun initFeatureDetailDI(context: Context) {
@@ -13,7 +14,15 @@ object FeatureInjectorProxy {
             DaggerFeatureDetailComponent_FeatureDetailDependenciesComponent.builder()
                 .localStorageApi(DaggerLocalDatabaseApiComponent.builder().build())
                 .networkApi(DaggerWeatherApiComponent.builder().build())
+                .build(), context
+        )
+    }
+
+    fun initFeatureFavoriteDI() {
+        FeatureFavoriteComponent.initAndGet(
+            DaggerFeatureFavoriteComponent_FeatureFavoriteDependenciesComponent.builder()
+                .localStorageApi(DaggerLocalDatabaseApiComponent.builder().build())
                 .build()
-        , context)
+        )
     }
 }

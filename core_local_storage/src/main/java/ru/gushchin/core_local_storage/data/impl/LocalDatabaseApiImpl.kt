@@ -23,6 +23,10 @@ class LocalDatabaseApiImpl @Inject constructor() : LocalDatabaseApi {
         return LocalStorageComponent.database.cityDao().getCities()
     }
 
+    override fun getFavouriteCities(): List<CityEntity>? {
+        return LocalStorageComponent.database.cityDao().getFavouriteCities()
+    }
+
     override fun saveWeatherInCity(weather: WeatherEntity) {
         val cashedWeather =
             LocalStorageComponent.database.weatherDao().getWeatherInCity(weather.city)

@@ -17,4 +17,7 @@ interface CityDao {
 
     @Query("SELECT * FROM cityentity")
     fun getCities(): List<CityEntity>?
+
+    @Query("SELECT * FROM cityentity WHERE isFavourite = 1")
+    fun getFavouriteCities(): List<CityEntity>?
 }

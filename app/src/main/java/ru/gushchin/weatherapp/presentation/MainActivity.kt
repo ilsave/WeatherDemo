@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
         LocalStorageInjectorProxy.initContext(applicationContext)
         NetworkInjectorProxy.initWorkManager(WeatherApplication.workManager)
         FeatureInjectorProxy.initFeatureDetailDI(applicationContext)
+        FeatureInjectorProxy.initFeatureFavoriteDI()
         setContentView(R.layout.activity_main)
     }
 }

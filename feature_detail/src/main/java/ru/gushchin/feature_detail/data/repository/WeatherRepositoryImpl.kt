@@ -43,7 +43,7 @@ class WeatherRepositoryImpl @Inject constructor(
                                             lat,
                                             lon,
                                             // TODO: fix
-                                            false
+                                            true
                                         )
                                     )
                                     localDatabaseApi.saveWeatherInCity(

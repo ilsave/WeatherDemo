@@ -1,20 +1,23 @@
 package ru.gushchin.feature_favorite.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.gushchin.feature_favorite.domain.FavoriteCityListInteractor
+import ru.gushchin.feature_favorite.domain.FavoriteCityListUseCase
 import ru.gushchin.feature_favorite.domain.Resource
+import javax.inject.Inject
 
-class FavoriteListViewModel: ViewModel() {
+class FavoriteListViewModel @Inject constructor(
+    private val useCase: FavoriteCityListUseCase
+): ViewModel() {
 
     private val _uiState = MutableStateFlow<FavoriteListUiState>(FavoriteListUiState.Loading)
     val uiState: StateFlow<FavoriteListUiState> = _uiState
 
-    //INJECT USECASE
-    val useCase = FavoriteCityListInteractor()
 
     fun getFavoriteCityList() {
         _uiState.value = FavoriteListUiState.Loading

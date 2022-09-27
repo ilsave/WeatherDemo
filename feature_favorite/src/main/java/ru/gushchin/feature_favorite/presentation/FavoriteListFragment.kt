@@ -1,58 +1,29 @@
 package ru.gushchin.feature_favorite.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
 import ru.gushchin.feature_favorite.databinding.FragmentFavoriteListBinding
-import ru.gushchin.feature_favorite.domain.Weather
+import ru.gushchin.feature_favorite.di.FeatureFavoriteComponent
+import javax.inject.Inject
 
 class FavoriteListFragment : Fragment() {
 
-    private val dummyList = arrayListOf(
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/04d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/01d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/13d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/04d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/01d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/13d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/04d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/01d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/13d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/04d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/01d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/13d@2x.png", description = "clear Sky"),
-        SillyWeather(name = "Balachna", temp = "55", wind = "Wind is strong", image = "https://openweathermap.org/img/wn/03d@2x.png", description = "clear Sky"),
-    )
-
-        private var _binding: FragmentFavoriteListBinding? = null
+    private var _binding: FragmentFavoriteListBinding? = null
     private val binding get() = _binding!!
 
-    // INJECT
     private val favoriteAdapter = FavoriteWeatherAdapter()
-    private val viewmodel = FavoriteListViewModel()
+
+    @Inject
+    lateinit var viewmodel: FavoriteListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,20 +36,12 @@ class FavoriteListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FeatureFavoriteComponent.featureFavoriteComponent?.inject(this)
+        viewmodel.getFavoriteCityList()
+        fetchPraySchedules()
         binding.favoriteRecyclerView.run {
             layoutManager = LinearLayoutManager(context)
-            favoriteAdapter.apply {
-                submitData(dummyList)
-                setOnFavoriteSwitchClickListener = { item ->
-                    dummyList.remove(item)
-                    submitData(dummyList)
-                }
-                setOnItemClickListener = {
-                    Toast.makeText(context, "you clicked", Toast.LENGTH_SHORT).show()
-                }
-            }.also {
-                adapter = it
-            }
+            adapter = favoriteAdapter
         }
     }
 
@@ -101,17 +64,25 @@ class FavoriteListFragment : Fragment() {
         }
     }
 
-    fun onLoaded(itemState: Weather) {
+    fun onLoaded(itemState: List<SillyWeather?>) {
         binding.progressBar.visibility = View.GONE
-        Toast.makeText(context, "got something", Toast.LENGTH_SHORT).show()
+        favoriteAdapter.apply {
+                submitData(itemState)
+                setOnFavoriteSwitchClickListener = { item ->
+                    // TODO: delete from favourite cities in db
+                }
+                setOnItemClickListener = {
+                    Toast.makeText(context, "you clicked", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     fun showError(stateError: FavoriteListUiState) {
-        Toast.makeText(context,"something went wrong", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "something went wrong", Toast.LENGTH_SHORT).show()
     }
 
     fun showLoading() {
         binding.progressBar.visibility = View.VISIBLE
-        Toast.makeText(context,"loading", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "loading", Toast.LENGTH_SHORT).show()
     }
 }
