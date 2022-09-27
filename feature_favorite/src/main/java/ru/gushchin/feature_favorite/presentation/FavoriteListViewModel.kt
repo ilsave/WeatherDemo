@@ -1,17 +1,36 @@
 package ru.gushchin.feature_favorite.presentation
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import ru.gushchin.feature_favorite.domain.FavoriteCityListInteractor
+import ru.gushchin.feature_favorite.domain.Resource
 
 class FavoriteListViewModel: ViewModel() {
 
-    data class FavoriteUiState(
-        val cities: List<String>
-    )
+    private val _uiState = MutableStateFlow<FavoriteListUiState>(FavoriteListUiState.Loading)
+    val uiState: StateFlow<FavoriteListUiState> = _uiState
 
-    sealed class FavoriteListUiState {
-        object Loading : FavoriteListUiState()
-        class Loaded(val itemState: FavoriteUiState) : FavoriteListUiState()
-        class Error(@StringRes val message: Int) : FavoriteListUiState()
+    //INJECT USECASE
+    val useCase = FavoriteCityListInteractor()
+
+    fun getFavoriteCityList() {
+        _uiState.value = FavoriteListUiState.Loading
+        viewModelScope.launch {
+            useCase.getFavoriteCityList().also { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        _uiState.value = FavoriteListUiState.Loaded(result.data!!)
+                    }
+                    is Resource.Error -> {
+                        _uiState.value = FavoriteListUiState.Error(result.message!!)
+                    }
+                }
+            }
+        }
     }
+
+
 }

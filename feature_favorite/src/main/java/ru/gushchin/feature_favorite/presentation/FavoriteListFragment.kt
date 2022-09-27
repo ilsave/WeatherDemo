@@ -6,8 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.launch
 import ru.gushchin.feature_favorite.databinding.FragmentFavoriteListBinding
+import ru.gushchin.feature_favorite.domain.Weather
 
 class FavoriteListFragment : Fragment() {
 
@@ -44,7 +49,10 @@ class FavoriteListFragment : Fragment() {
 
         private var _binding: FragmentFavoriteListBinding? = null
     private val binding get() = _binding!!
+
+    // INJECT
     private val favoriteAdapter = FavoriteWeatherAdapter()
+    private val viewmodel = FavoriteListViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,5 +85,33 @@ class FavoriteListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun fetchPraySchedules() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewmodel.uiState.collect { state ->
+                    when (state) {
+                        is FavoriteListUiState.Loaded -> onLoaded(state.itemState)
+                        is FavoriteListUiState.Error -> showError(state)
+                        is FavoriteListUiState.Loading -> showLoading()
+                    }
+                }
+            }
+        }
+    }
+
+    fun onLoaded(itemState: Weather) {
+        binding.progressBar.visibility = View.GONE
+        Toast.makeText(context, "got something", Toast.LENGTH_SHORT).show()
+    }
+
+    fun showError(stateError: FavoriteListUiState) {
+        Toast.makeText(context,"something went wrong", Toast.LENGTH_SHORT).show()
+    }
+
+    fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+        Toast.makeText(context,"loading", Toast.LENGTH_SHORT).show()
     }
 }
